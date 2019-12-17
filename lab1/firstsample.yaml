@@ -1,0 +1,13 @@
+- name: First Playbook
+  hosts: node1.testing.com
+  tasks:
+  - name: installing vsftpd
+    yum: name=vsftpd
+  - name: enabling vsftpd
+    service: name=vsftpd enabled=true
+  - name: create readme file
+    copy: 
+      content: "This file is created with ansible, from controller machine"
+      dest: /opt/hemanth_modified.txt
+      mode: 777
+      force: no

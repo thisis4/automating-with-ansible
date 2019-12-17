@@ -1,0 +1,13 @@
+- name: Deploy Services
+  hosts: servers
+  tasks:
+  - name: Read the tasks yaml file, to find what to do.
+    include: tasks.yaml
+    vars: 
+      package: samba
+      state: started
+      service: smb
+    register: output
+  - name: debugs the included tasks
+    debug:
+      var: output

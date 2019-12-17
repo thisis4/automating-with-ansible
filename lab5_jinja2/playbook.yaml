@@ -1,0 +1,22 @@
+- hosts: node1.testing.com
+  tasks:
+    - block:
+      - include: install_packages.yaml
+        vars:
+          memory: 256
+          web_package: httpd
+          ssl_package: mod_ssl
+          web_service: httpd
+      - include: configure_web.yaml
+        vars:
+          https_uri: http://node1.testing.com/lab5/https.conf
+          ssl_uri: http://node1.testing.com/lab5/ssl.tar.gz
+      - include: configure_firewall.yaml
+        vars:
+          fw_package: firewalld
+          fw_service: firewalld
+        tags: production
+      - name: restart_web
+        service:
+          name: "{{ web_service }}"
+          state: restarted

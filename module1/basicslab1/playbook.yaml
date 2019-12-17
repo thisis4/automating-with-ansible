@@ -1,0 +1,44 @@
+- hosts: node1.testing.com
+  vars:
+    wb_package: httpd
+    fw_package: firewalld
+    wb_service: httpd
+    fw_service: firewalld
+  
+  tasks:
+    - name: Install and update latest packages
+      yum:
+        name: 
+          - "{{ wb_package }}"
+          - "{{ firewall_package }}"
+        state: latest
+
+    - name: Enabling firewalld
+      firewalld:
+        service: "{{ fw_service }}"
+        state: started
+        enabled: true
+    
+    - name: Create web content
+      copy: 
+        content: "Welcome to Ansible Server\n"
+        dest: /var/www/html/index.html
+        force: no
+        mode: 777
+
+    - name: Start and enable web service
+      service:
+        name: "{{ wb_service }}"
+        state: started
+        enabled: true
+
+
+- name: Verify the web server
+  hosts: localhost
+  become: false
+  tasks:
+    - name: Test the web server is available 
+      uri:
+        url: http://node1.testing.com
+        status_code: 200
+       

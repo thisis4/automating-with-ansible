@@ -1,0 +1,9 @@
+- name: Using when statement in this yaml
+  hosts: node1.testing.com
+  tasks:
+    - name: install vim if sufficient disk
+      yum:
+        name: mariadb-server
+        state: latest
+      with_items: "{{ ansible_mounts }}"
+      when: item.mount == "/" and item.size_available > 4728646

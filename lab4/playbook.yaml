@@ -1,0 +1,59 @@
+- name: Playbook yaml
+  hosts: node2.testing.com
+  vars:
+    firewall: firewalld
+
+  tasks: 
+    - name: Install firewalld
+      yum:
+        name: "{{ firewall }}"
+        state: latest
+    - name: Start firewalld
+      service: 
+        name: "{{ firewall }}"
+        state: started
+        enabled: true
+
+- hosts: lamp
+  tasks:
+    - name: include the variable file
+      include_vars: vars/allvars.yaml
+    - name: include the tasks file
+      include: tasks/lamp.yaml
+    - name: Open port for the webserver
+      firewalld:
+        service: httpd
+        state: enabled
+        immediate: true
+        permanent: true
+    - name: Create index yaml file
+      copy: 
+        content: "{{ ansible_fqdn }}({{ ansible_default_ipv4.address }}) Managed by Hemanth Ansible\n"
+#        content: "Managed by Hemanth Ansible"
+        dest: "{{ web_root }}/index.html"
+
+
+- hosts: file
+  tasks:
+  - name: include the variable file
+    include_vars: vars/allvars.yaml
+  - name: include the tasks file
+    include: tasks/lamp.yaml
+
+  - name: Open port for the ftp service
+    firewalld:
+      service: ftp
+      state: enabled
+      immediate: true
+      permanent: true
+
+  - name: Open port for the smb service
+    firewalld:
+      service: samba
+      state: enabled
+      immediate: true
+      permanent: true
+
+
+
+

@@ -1,0 +1,11 @@
+- name: Install some packages
+  hosts: all
+  tasks:
+  - name: Include packages
+    include_vars: packages.yaml
+  - name: installs {{ packages.my_pkg }}
+    yum:
+      name: "{{ packages.my_pkg }}"
+      state: latest
+
+

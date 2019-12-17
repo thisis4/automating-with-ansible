@@ -1,0 +1,12 @@
+[servers]
+#node2.testing.com
+#node1.testing.com ansible_user=hemanth
+node3.testing.com
+
+
+[lamp]
+node1.testing.com
+
+
+[file]
+node2.testing.com
