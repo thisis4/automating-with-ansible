@@ -1,0 +1,8 @@
+- name: Registered variables demo 1
+  hosts: node1.testing.com
+  tasks:
+  - name: Capture output of who
+    command: who
+    register: logedin
+  - shell: echo "User is loggedin"
+    when: logedin.stdout.find('root') != -1

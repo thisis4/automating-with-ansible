@@ -1,0 +1,18 @@
+- name: Registered variable as a loop list
+  hosts: node1.testing.com
+  tasks:
+    - name: create backup spooler directory
+      file:
+        path: /var/barspool
+        state: directory
+
+    - name: retrive the list of home directories
+      command: ls /home/
+      register: home_dir
+ 
+    - name: Add home directories to backup spooler
+      file:
+        path: /var/barspool/{{ item }}
+        src: /home/{{ item }}
+        state: absent
+      loop: "{{ home_dir.stdout_lines }}"

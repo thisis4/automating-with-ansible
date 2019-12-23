@@ -1,0 +1,14 @@
+- name: Create Ubuntu instance on EC2
+  hosts: localhost
+  tasks:
+  - name: start the instances
+    ec2:
+      aws_access_key:       #Access key from AWS portal
+      aws_secret_key:       #Secret key from AWS portal
+      image:                #3 ways, either from portal or awscli or ansible playbook
+      region:               #Mention required region
+      instance_type:        #Check type of instances available in region & give as per the request
+      key_name:             #SSH public,private key that is generated in aws console.
+      group:                #specify security group, which has created earlier along with key.
+ 
+    

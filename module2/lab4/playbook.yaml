@@ -1,0 +1,38 @@
+- name: Deploy and start apache
+  hosts: all
+  include_vars: vars/{{ ansible_os_family }}.yaml
+  
+  tasks:
+    - name: Install and update latest packages
+      package:
+        name:
+          - "{{ web_package }}"
+          - "{{ ftp_package }}"
+          - "{{ db_package }}"
+          - "{{ firewall_package }}"
+        state: latest
+      notify:
+        - success
+   
+    - name: Start and enable {{ firewall_service }}
+      service:
+        name: "{{ firewall_service }}"
+        state: started
+        enabled: true
+  
+    - name: Start and enable {{ web_service }}
+      service:
+        name: "{{ web_service }}"
+        state: started
+        enaled: true
+
+    - include_tasks: tasks/ubuntu.yaml
+      when: ansible_os_family == 'Ubuntu'
+  
+    - include_tasks: tasks/redhat.yaml
+      when: ansible_os_family == 'Redhat'
+
+    handlers:
+      - name: success
+        debug:
+          msg: package installation on {{ inventory_hostname }} is successful

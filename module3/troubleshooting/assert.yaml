@@ -1,0 +1,10 @@
+- name: test for file existence
+  hosts: node1.example.com
+  tasks:
+    - stat:
+        path: /etc/hosts
+      register: hosts
+
+    - assert: 
+        that:
+          - hosts.stat.exists

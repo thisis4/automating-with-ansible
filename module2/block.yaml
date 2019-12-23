@@ -1,0 +1,21 @@
+- name: This is block playbook
+  hosts: node1.testing.com
+  tasks:
+    - name: Install Apache
+      block:
+        - package:
+            name: "{{ item }}"
+            state: installed
+          with_items:
+            - httpd
+            - elinks
+            - mod_ssl
+        - service:
+            name: httpd
+            state: started
+            enabled: True
+      when: ansible_distribution == "CentOS"
+
+
+
+     

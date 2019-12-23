@@ -1,0 +1,27 @@
+- name: working with handlers
+  hosts: node1.testing.com
+  tasks:
+    - name: 
+      yum:
+        name: httpd
+        state: latest
+      
+#  tasks:
+    - name: create file
+      copy: 
+        content: "This is created file with ansible from controller"
+        dest: /var/index.html
+        mode: 777
+
+    - name: Copy file
+      copy:
+        src: /var/index.html
+        dest: /home/hemanth/index.html
+      notify:
+        - restart_web
+  handlers:
+    - name: restart_web
+      service:
+        name: httpd
+        state: restarted
+

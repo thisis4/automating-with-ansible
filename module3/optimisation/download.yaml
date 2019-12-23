@@ -1,0 +1,17 @@
+- name: download large file
+  hosts: node1.testing.com
+  tasks: 
+    - name: download large file
+      get_url:
+        url: https://codeload.github.com/gist/8598119/zip/8f671464f914320281e5e75bb8dcbe11285d21e6
+        dest: /destination/folder
+      async: 3600
+      poll: 0
+      register: download_background
+    - name: wait for download complete
+      async_status:
+        jid: "{{ download_background.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: 30
+      delay: 120

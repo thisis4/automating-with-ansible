@@ -1,0 +1,17 @@
+- name: restart the server
+  hosts: node1.testing.com
+  tasks: 
+    - name: restart the server
+      shell: sleep 2 && shutdown -r now "rebooting, please wait"
+      async: 1 
+      poll: 0
+      ignore_errors: true
+
+    - name: waiting for server to come back
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        state: started
+        delay: 30 
+        timeout: 300
+     delegate_to: localhost

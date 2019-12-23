@@ -1,0 +1,7 @@
+- name: Wait for me
+  hosts: node1.testing.com
+  tasks:
+    - name: set waiting limit
+      command: /bin/sleep 5
+      async: 10
+      poll: 5

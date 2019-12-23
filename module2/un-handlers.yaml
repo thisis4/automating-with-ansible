@@ -1,0 +1,20 @@
+- name: clean up the server
+  hosts: node1.testing.com
+  tasks:
+    - name: Stopping web server
+      service:
+        name: httpd
+        state: stopped
+      notify: 
+        - remove_httpd
+
+    - name: Removing files
+      file:
+        path: /var/www/html/index.html
+        state: absent
+  handlers:
+    - name: remove_httpd
+      yum:
+        name: httpd
+        state: absent
+        

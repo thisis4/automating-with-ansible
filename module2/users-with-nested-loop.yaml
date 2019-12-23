@@ -1,0 +1,32 @@
+- name: users with nested loop
+  users:
+    name:  "{{ item[0] }}"
+    state: present
+    groups: "{{ item[1] }}"
+  with_nested: 
+    - [ 'hemanth', 'john' ] 
+    - [ 'student', 'prof' ]
+
+
+---
+# Using variables with nested loops
+
+- name: Using variables with nested loops
+  vars:
+    users:
+      - hemanth
+      - john
+    groups:
+      - student
+      - prof
+   tasks:
+     - name: make users member of group
+     users:
+       name: "{{ item[0] }}"
+       groups: "{{ item [1] }}"
+       state: present
+     with_nested:
+       - "{{ users }}"
+       - "{{ groups }}"
+
+

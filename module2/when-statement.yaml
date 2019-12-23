@@ -1,0 +1,52 @@
+#When statement can be started based on booleans 
+
+- hosts: all
+  vars:
+    startme: true
+  tasks:
+    - name: install samba
+      package:
+        name: samba
+      when: startme  #When statement is not a part of module. Because it defines condition for the task, not for the specific module.
+
+
+# Set the package to install in a variable, only run the task when that variable is defined.
+
+
+- hosts: all
+  vars:
+    to_install: samba
+
+  tasks:
+  - name: Installing {{ to_install }}
+    package:
+      name: "{{ to_install }}"
+      state: latest
+    when: to_install is defined
+
+#Using variables values in other variables
+
+- hosts: all
+  vars:
+    myusers:
+      - hemanth
+  superusers:
+    - root
+    - hemanth
+
+ tasks:
+   - name: run only if hemanth is in super user
+     user:
+       name: "{{ my_users }}"
+       append: yes
+       groups: wheel
+     when: my_users in superusers
+
+#Combining loops and conditionals
+
+- name: Installing vsftpd if sufficient space on /var/ftp
+  package: 
+    name: vsftpd
+    state: latest
+  with_items: "{{ ansible_mounts }}"
+  when:item.mount: == "/var/ftp" and item.size.available > 100000000

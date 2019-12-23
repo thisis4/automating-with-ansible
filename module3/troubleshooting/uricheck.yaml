@@ -1,0 +1,15 @@
+- name: check url 
+  hosts: node1.testing.com
+  tasks:
+    - uri:
+        url: https://hemanth.com/
+        return_content: yes
+      register: webpage
+
+    - name: Fail if hemanth is not in page
+      fail: 
+        msg: 'not the right content'
+      when: "'hemanth' not in webpage.content"
+
+      
+

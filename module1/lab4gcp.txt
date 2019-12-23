@@ -1,0 +1,10 @@
+In Lab4, working with GCP.
+
+Lab:-
+Managing Google cloud instance using Ansible
+Use Ansible to create an linux instance in public cloud.
+Use Dynamic inventory to discover this instance.
+Use appropriate module to create a user on the instance.
+https://docs.ansible.com/ansible/latest/scenario_guides/guide_gce.html
+
+All public cloud related stuff is available in ansible documentation page. 

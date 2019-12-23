@@ -1,0 +1,4 @@
+[servers]
+#node2.testing.com
+#node1.testing.com ansible_user=hemanth
+node2.testing.com
